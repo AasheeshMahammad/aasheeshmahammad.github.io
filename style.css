@@ -218,7 +218,8 @@ img { max-width: 100%; }
 @media (max-width: 860px) { .lc-grid { grid-template-columns: 1fr; gap: 28px; } }
 
 /* Contact */
-.contact { text-align: center; max-width: 640px; }
+.contact { text-align: center; max-width: 760px; }
+.contact p { max-width: 600px; margin-left: auto; margin-right: auto; }
 .contact p { color: var(--muted); font-size: 1.08rem; margin-bottom: 32px; }
 .center-cta { justify-content: center; }
 
