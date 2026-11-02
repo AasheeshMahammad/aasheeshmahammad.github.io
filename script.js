@@ -165,7 +165,7 @@
     .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
     .then(function (u) {
       var years = Math.max(1, Math.floor((Date.now() - new Date(u.created_at)) / (365.25 * 24 * 3600 * 1000)));
-      var values = { public_repos: u.public_repos, followers: u.followers, years: years + "+" };
+      var values = { public_repos: u.public_repos, years: years + "+" };
       document.querySelectorAll("[data-stat]").forEach(function (n) {
         var v = values[n.getAttribute("data-stat")];
         if (v !== undefined) n.textContent = v;
