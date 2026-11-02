@@ -161,7 +161,7 @@ img { max-width: 100%; }
 .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
 .about-grid p { color: var(--muted); }
 .about-grid strong { color: var(--text); font-weight: 600; }
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; }
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 28px; max-width: 360px; }
 .stat { padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); text-align: center; }
 .stat-num { display: block; font-size: 1.7rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .stat-label { font-size: 0.8rem; color: var(--muted); }
