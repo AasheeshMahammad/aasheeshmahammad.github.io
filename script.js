@@ -2,7 +2,11 @@
   "use strict";
 
   var USER = "AasheeshMahammad";
-  var EXCLUDE = [USER.toLowerCase(), (USER + ".github.io").toLowerCase()];
+  // Profile/site repos, plus the projects already featured on the page
+  var EXCLUDE = [
+    USER, USER + ".github.io",
+    "insomnia-plugin-run-requests-parallel", "Chatbot", "Animepahe-Link-Fetcher"
+  ].map(function (n) { return n.toLowerCase(); });
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var root = document.documentElement;
 
@@ -60,7 +64,7 @@
   observeReveal(Array.prototype.slice.call(document.querySelectorAll(".reveal")));
 
   // Typing effect
-  var roles = ["Software Engineer", "Backend Developer", "Web Developer", "Problem Solver", "Lifelong Learner"];
+  var roles = ["Full Stack Engineer", "Analyst @ Goldman Sachs", "Spring Boot · Angular · React", "AI & LLM integrations", "Python automation"];
   var typed = document.getElementById("typed");
   if (reduceMotion) {
     typed.textContent = roles[0];
@@ -135,15 +139,10 @@
     ]);
   }
 
-  function showFallback(grid, msg) {
-    grid.innerHTML = "";
-    grid.appendChild(el("div", { "class": "card empty-card" }, [
-      el("p", { text: msg }),
-      el("a", { href: "https://github.com/" + USER + "?tab=repositories", target: "_blank", rel: "noopener", "class": "btn btn-primary", text: "Browse on GitHub" })
-    ]));
-  }
-
   var grid = document.getElementById("projects-grid");
+  var moreBlock = document.getElementById("more-projects");
+  // Featured projects are static, so if the live list can't load, just hide the extra grid
+  function hideMore() { moreBlock.style.display = "none"; }
 
   fetch("https://api.github.com/users/" + USER + "/repos?per_page=100&sort=updated", { headers: { Accept: "application/vnd.github+json" } })
     .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
@@ -152,24 +151,12 @@
         .sort(function (a, b) {
           return (b.stargazers_count - a.stargazers_count) || (new Date(b.pushed_at) - new Date(a.pushed_at));
         })
-        .slice(0, 6);
-      if (!list.length) { showFallback(grid, "Projects are on the way. Check back soon!"); return; }
+        .slice(0, 3);
+      if (!list.length) { hideMore(); return; }
       grid.innerHTML = "";
       var cards = list.map(projectCard);
       cards.forEach(function (c) { grid.appendChild(c); });
       observeReveal(cards);
     })
-    .catch(function () { showFallback(grid, "Couldn't load projects right now, but you can find them all on GitHub."); });
-
-  fetch("https://api.github.com/users/" + USER)
-    .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
-    .then(function (u) {
-      var years = Math.max(1, Math.floor((Date.now() - new Date(u.created_at)) / (365.25 * 24 * 3600 * 1000)));
-      var values = { public_repos: u.public_repos, years: years + "+" };
-      document.querySelectorAll("[data-stat]").forEach(function (n) {
-        var v = values[n.getAttribute("data-stat")];
-        if (v !== undefined) n.textContent = v;
-      });
-    })
-    .catch(function () { document.getElementById("gh-stats").style.display = "none"; });
+    .catch(hideMore);
 })();
